@@ -778,7 +778,18 @@ public class FurnitureTable extends JTable implements View, Printable {
       // Change printable column header renderer
       printableColumn.setHeaderRenderer(printableHeaderRenderer);
       printableColumnModel.addColumn(printableColumn);
-    }    
+    }
+    TableColumn levelColumn = new TableColumn();
+    levelColumn.setHeaderValue("Level");
+    levelColumn.setHeaderRenderer(printableHeaderRenderer);
+    levelColumn.setCellRenderer(new TableCellRenderer() {
+      @Override
+      public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+        Level level = value instanceof HomePieceOfFurniture ? ((HomePieceOfFurniture)value).getLevel() : null;
+        return defaultRenderer.getTableCellRendererComponent(table, level != null ? level.getName() : "", false, false, row, column);
+      }
+    });
+    printableColumnModel.addColumn(levelColumn);
     return print(g, pageFormat, pageIndex, printableColumnModel, Color.BLACK);
   }
 
